@@ -13,7 +13,6 @@ export interface IUserSchema extends mongoose.Document {
   surname: string;
   email: string;
   password: string;
-  is_confirmed: boolean;
   comparePassword: (password: string) => Promise<boolean>;
   getEncryptedPassword: (password: string) => Promise<string>;
 }
@@ -36,15 +35,17 @@ export const UserSchema = new mongoose.Schema<IUserSchema>(
       required: [true, 'Surname can not be empty'],
       type: String,
     },
-    is_confirmed: {
-      type: Boolean,
-      required: [true, 'Confirmed can not be empty'],
-    },
     password: {
       type: String,
       required: [true, 'Password can not be empty'],
       minlength: [6, 'Password should include at least 6 chars'],
     },
+    exchange: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Exchange"
+      }
+    ]
   },
   {
     toObject: {

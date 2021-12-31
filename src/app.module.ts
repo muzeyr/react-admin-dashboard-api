@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { CurrencyModule } from './currency/currency.module';
+import { ExchangeModule } from './exchange/exchange.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { CurrencyModule } from './currency/currency.module';
     ),
     UserModule,
     CurrencyModule,
+    ExchangeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

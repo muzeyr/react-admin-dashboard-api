@@ -10,6 +10,10 @@ async function bootstrap() {
     res.header('Access-Control-Allow-Headers', 'Content-Type, Accept');
     next();
   });
+  app.enableCors({
+    origin: '*',
+    allowedHeaders: 'Origin, X-Requested-With, Content-Type, Accept',
+  });
   const config = new DocumentBuilder()
   .setTitle('Currency Exchange')
   .setDescription('TheC urrency Exchange API description')

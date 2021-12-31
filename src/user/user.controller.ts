@@ -36,7 +36,6 @@ export class UserController {
         };
       } else {
         try {
-          //userRequest.is_confirmed = false;
           const createdUser = await this.userService.create(userRequest);
           delete createdUser.password;
           result = {
