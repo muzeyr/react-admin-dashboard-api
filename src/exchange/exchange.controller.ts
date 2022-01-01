@@ -16,12 +16,10 @@ export class ExchangeController {
     @ApiOperation({ summary: 'Create exchange' })
     @ApiResponse({ status: 403, description: ' Forbidden.' })
     public async create(@User('id') userId: string,@Body() exchange: CreateExchangeDto): Promise<IExchangeCreateResponse> {
-      exchange.userID = userId;
-      console.log(userId);
+      exchange.user = userId;
       let result: IExchangeCreateResponse;
       if (exchange) {
         try {
-          console.log(exchange);
           const created = await this.exchangeService.create(exchange);
           result = {
             status: HttpStatus.CREATED,
@@ -49,14 +47,14 @@ export class ExchangeController {
   
       return result;
     }
-  
+
     @Get()
     @ApiResponse({
       status: 200,
       description: 'The found record',
     })
-    public async getAllUser(): Promise<IExchange[]> {
-     return this.exchangeService.all();
+    public async getAllUser(@User('id') userId: string): Promise<IExchange[]> {
+     return this.exchangeService.all(userId);
     }
 
     @Get('/coin/:coin')

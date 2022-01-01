@@ -31,5 +31,5 @@ export class CreateExchangeDto {
     minLength: 1,
     example: 'User',
   })
-  userID: Object;
+  user: Object;
 }

@@ -10,5 +10,5 @@ export interface IExchange extends Document {
   time_stamp: string;
   toValue: string;
   type: string;
-  userID: string;
+  user: string;
 }

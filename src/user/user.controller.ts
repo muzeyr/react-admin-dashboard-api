@@ -4,16 +4,13 @@ import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { CurrencyService } from '../currency';
-import { IExchange } from '../exchange/interface/exchange.interface';
 import { UserRO } from './dto/user.interface';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller("user")
 @ApiTags('user')
 export class UserController {
-  constructor(private readonly userService: UserService,
-              private readonly coinService: CurrencyService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create user' })

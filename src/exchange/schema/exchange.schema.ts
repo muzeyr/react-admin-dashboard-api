@@ -13,12 +13,12 @@ function transformValue(doc, ret: { [key: string]: any }) {
 export interface IExchangeSchema extends mongoose.Document {
   
   fromCoin:string;
-  fromQuantity: Coin;
+  fromQuantity: number;
   fromValue:number;
   type: number;
   timeStamp: Date;
   description: String;
-  userID: Object;
+  user: Object;
 }
 
 export const ExchangeSchema = new mongoose.Schema<IExchangeSchema>(
@@ -29,7 +29,7 @@ export const ExchangeSchema = new mongoose.Schema<IExchangeSchema>(
     },
     fromQuantity: {
       required: [true, 'fromQuantity can not be empty'],
-      type: String,
+      type: Number,
     },
     fromValue: {
       type: Number,
@@ -43,7 +43,7 @@ export const ExchangeSchema = new mongoose.Schema<IExchangeSchema>(
       required: [false, 'Description can not be empty'],
       type: String,
     },
-    userID: {
+    user: {
       required:[true,'User can not be empty'],
       type: UserSchema
     },
@@ -64,6 +64,7 @@ export const ExchangeSchema = new mongoose.Schema<IExchangeSchema>(
     },
   },
 );
+
 
 ExchangeSchema.pre('save', async function (next) {
   this.timeStamp = new Date();

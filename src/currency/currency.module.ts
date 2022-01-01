@@ -3,10 +3,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { CurrencyController } from './currency.controller';
 import { CurrencyService } from './currency.service';
 import { CurrencySchema } from './schema/currency.schema';
+import { ExchangeSchema } from '../exchange/schema/exchange.schema';
 
 @Module({
-  imports: [MongooseModule.forFeature([{ name: 'Currency', schema: CurrencySchema }])],
+  imports: [
+    MongooseModule.forFeature([{ name: 'Currency', schema: CurrencySchema }]),
+    MongooseModule.forFeature([{ name: 'Exchange', schema: ExchangeSchema }]),
+    
+  ],
   controllers: [CurrencyController],
-  providers: [CurrencyService]
+  providers: [CurrencyService],
 })
 export class CurrencyModule {}

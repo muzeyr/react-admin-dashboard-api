@@ -5,6 +5,7 @@ import { UpdateCurrencyDto } from './dto/update-currency.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ICurrencyCreateResponse } from './interface/currency-create-response.interface';
 import { IUser } from '../user/interface/user.interface';
+import { User } from 'src/user/user.decorator';
 
 @Controller('currency')
 @ApiTags('currency')
@@ -16,7 +17,7 @@ export class CurrencyController {
     @ApiResponse({ status: 403, description: 'Forbidden.' })
     public async create(@Body() currencyRequest: CreateCurrencyDto): Promise<ICurrencyCreateResponse> {
       let result: ICurrencyCreateResponse;
-      console.log(currencyRequest);
+
       if (currencyRequest) {
         const usersWithEmail = await this.currencyService.search({
           currency: currencyRequest.name,
@@ -50,15 +51,33 @@ export class CurrencyController {
       return result;
     }
   
+    @Get('/withQuantity')
+    @ApiResponse({
+      status: 200,
+      description: 'The found record',
+    })
+    public async getAll(@User('id') userId: string): Promise<IUser[]> {
+     return await this.currencyService.allWithCalculate(userId);
+    }
+
     @Get()
     @ApiResponse({
       status: 200,
       description: 'The found record',
     })
-    public async getAllUser(): Promise<IUser[]> {
-     return this.currencyService.all();
+    public async get(): Promise<IUser[]> {
+     return await this.currencyService.all();
     }
-  
+    
+    @Get('/calculate')
+    @ApiResponse({
+      status: 200,
+      description: 'The found record',
+    })
+    public async calculate(@User('id') userId: string): Promise<IUser[]> {
+     return await this.currencyService.allWithCalculate(userId);
+    }
+
     @ApiResponse({
       status: 200,
       description: 'Update currency',
