@@ -1,28 +1,35 @@
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateExchangeDto {
-  
-  @ApiProperty({
-    uniqueItems: true,
-    example: 'muzeyr@gmail.com',
-  })
-  email: string;
 
   @ApiProperty({
     uniqueItems: true,
-    example: 'Uzeyr',    
+    example: 'ETH',
   })
-  name: string;
+  fromCoin: string;
+
+  @ApiProperty({
+    uniqueItems: true,
+    example: '0.300',    
+  })
+  fromQuantity: number;
+
+  @ApiProperty({
+    uniqueItems: true,
+    example: '0.04791411',    
+  })
+  fromValue: number;
+  
 
   @ApiProperty({
     minLength: 1,
-    example: 'OZCAN',
+    example: '1:Alım,-1:Satım',
   })
-  surname: string;
+  type: number;
 
   @ApiProperty({
-    minLength: 6,
-    example: '*****',
+    minLength: 1,
+    example: 'User',
   })
-  password: string;
+  userID: Object;
 }

@@ -4,7 +4,7 @@ import { CurrencyService } from './currency.service';
 import { UpdateCurrencyDto } from './dto/update-currency.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { ICurrencyCreateResponse } from './interface/currency-create-response.interface';
-import { IUser } from 'src/user/interface/user.interface';
+import { IUser } from '../user/interface/user.interface';
 
 @Controller('currency')
 @ApiTags('currency')

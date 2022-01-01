@@ -1,14 +1,19 @@
-import { Controller, Post, HttpStatus, Body, Get, Req, Put, Delete, Param } from '@nestjs/common';
+import { Controller, Post, HttpStatus, Body, Get, Req, Put, Delete, Param, UsePipes, ValidationPipe, HttpException } from '@nestjs/common';
 import { IUserCreateResponse } from "./interface/user-create-response.interface";
 import { UserService } from "./user.service";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { CurrencyService } from '../currency';
+import { IExchange } from '../exchange/interface/exchange.interface';
+import { UserRO } from './dto/user.interface';
+import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller("user")
 @ApiTags('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(private readonly userService: UserService,
+              private readonly coinService: CurrencyService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create user' })
@@ -16,7 +21,6 @@ export class UserController {
   public async create(@Body() userRequest: CreateUserDto
   ): Promise<IUserCreateResponse> {
     let result: IUserCreateResponse;
-    console.log(userRequest);
     if (userRequest) {
       const usersWithEmail = await this.userService.search({
         email: userRequest.email,
@@ -36,6 +40,18 @@ export class UserController {
         };
       } else {
         try {
+          /*
+          const coin = await this.coinService.findByName({name:'XRP'});
+          let newUserCampain : {
+            quantityTo:2,
+            coinFrom: any,
+            quantityFrom:40000
+          }
+          newUserCampain.coinFrom = coin;
+          userRequest.exchanges = [newUserCampain];
+          console.log(userRequest);
+          */
+         userRequest.exchanges = [{ quantityTo:0, coinFrom: 'XRP',quantityFrom:40000,coinTo:''}];
           const createdUser = await this.userService.create(userRequest);
           delete createdUser.password;
           result = {
@@ -70,12 +86,28 @@ export class UserController {
 
    return this.userService.all();
   }
+  
 
 
   @Put()
   async update(@Body() userData: UpdateUserDto) {
     return await this.userService.update(userData);
   }
+
+  @UsePipes(new ValidationPipe())
+  @Post('/login')
+  async login(@Body() loginUserDto: LoginUserDto): Promise<UserRO> {
+    const _user = await this.userService.findOne(loginUserDto);
+
+    const errors = {User: ' not found'};
+    if (!_user) throw new HttpException({errors}, 401);
+
+    const token = await this.userService.generateJWT(_user);
+    const {email, username, bio, image} = _user;
+    const user = {email, token, username, bio, image};
+    return {user}
+  }
+
 
 
   

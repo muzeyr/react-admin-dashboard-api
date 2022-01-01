@@ -1,9 +1,14 @@
-import { Document } from 'mongoose';
+import { Condition, Document } from 'mongoose';
+import { Coin } from './coin.interface';
 
 export interface IExchange extends Document {
   id?: string;
-  name: string;
-  value: string;
-  unit: string;
-  time_stamp: string
+  quantityFrom: number;
+  quantityTo: number;
+  coinFrom: Coin;
+  coinTo: Coin;
+  time_stamp: string;
+  toValue: string;
+  type: string;
+  userID: string;
 }

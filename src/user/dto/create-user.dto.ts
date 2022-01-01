@@ -25,4 +25,10 @@ export class CreateUserDto {
     example: '*****',
   })
   password: string;
+
+  @ApiProperty({
+    minLength: 6,
+    example: 'Coins ',
+  })
+  exchanges: any[];
 }

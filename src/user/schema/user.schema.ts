@@ -1,11 +1,12 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { ExchangeSchema, IExchangeSchema } from '../../exchange/schema/exchange.schema';
 
 const SALT_ROUNDS = 10;
 
 function transformValue(doc, ret: { [key: string]: any }) {
-  delete ret._id;
-  delete ret.password;
+//  delete ret._id;
+//  delete ret.password;
 }
 
 export interface IUserSchema extends mongoose.Document {
@@ -15,7 +16,18 @@ export interface IUserSchema extends mongoose.Document {
   password: string;
   comparePassword: (password: string) => Promise<boolean>;
   getEncryptedPassword: (password: string) => Promise<string>;
+  exchanges: IExchangeSchema[]
 }
+
+const exchange = new mongoose.Schema({
+  description: { type: String },
+  quantityFrom: { type: Number, required: true },
+  quantityTo: { type: Number, required: true },
+  coinFrom: { type: Object, required: true },
+  coinTo: { type: Object, required: true },
+  timeStamps:{ type:Date },
+
+})
 
 export const UserSchema = new mongoose.Schema<IUserSchema>(
   {
@@ -40,12 +52,7 @@ export const UserSchema = new mongoose.Schema<IUserSchema>(
       required: [true, 'Password can not be empty'],
       minlength: [6, 'Password should include at least 6 chars'],
     },
-    exchange: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Exchange"
-      }
-    ]
+    exchanges: [exchange],
   },
   {
     toObject: {

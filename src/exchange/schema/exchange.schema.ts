@@ -1,5 +1,7 @@
 import * as mongoose from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { Coin } from '../interface/coin.interface';
+import { UserSchema } from 'src/user/schema/user.schema';
 
 const SALT_ROUNDS = 10;
 
@@ -9,23 +11,44 @@ function transformValue(doc, ret: { [key: string]: any }) {
 }
 
 export interface IExchangeSchema extends mongoose.Document {
-  name: string;
-  surname: string;
-  email: string;
-  password: string;
-  comparePassword: (password: string) => Promise<boolean>;
-  getEncryptedPassword: (password: string) => Promise<string>;
+  
+  fromCoin:string;
+  fromQuantity: Coin;
+  fromValue:number;
+  type: number;
+  timeStamp: Date;
+  description: String;
+  userID: Object;
 }
 
 export const ExchangeSchema = new mongoose.Schema<IExchangeSchema>(
   {
-    name: {
+    fromCoin: {
       type: String,
-      required: [true, 'Name can not be empty'],
+      required: [true, 'fromCoin can not be empty'],
     },
-    surname: {
-      required: [true, 'Surname can not be empty'],
+    fromQuantity: {
+      required: [true, 'fromQuantity can not be empty'],
       type: String,
+    },
+    fromValue: {
+      type: Number,
+      required: [true, 'quantityTo can not be empty'],
+    },
+    type: {
+      required: [true, 'CoinTo can not be empty'],
+      type: Number,
+    }, 
+    description: {
+      required: [false, 'Description can not be empty'],
+      type: String,
+    },
+    userID: {
+      required:[true,'User can not be empty'],
+      type: UserSchema
+    },
+    timeStamp:{
+       type: Date
     },
   },
   {
@@ -42,17 +65,7 @@ export const ExchangeSchema = new mongoose.Schema<IExchangeSchema>(
   },
 );
 
-ExchangeSchema.methods.getEncryptedPassword = (
-  password: string,
-): Promise<string> => {
-  return bcrypt.hash(String(password), SALT_ROUNDS);
-};
-
-ExchangeSchema.methods.compareEncryptedPassword = function (password: string) {
-  return bcrypt.compare(password, this.password);
-};
-
 ExchangeSchema.pre('save', async function (next) {
-  
+  this.timeStamp = new Date();
   next();
 });

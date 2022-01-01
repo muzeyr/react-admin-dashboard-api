@@ -4,6 +4,12 @@ import { Model } from 'mongoose';
 import { IUser } from './interface/user.interface';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginUserDto } from './dto/login-user.dto';
+import { SECRET } from 'src/config';
+const jwt = require('jsonwebtoken');
+import * as bcrypt from 'bcrypt';
+
+
 
 @Injectable()
 export class UserService {
@@ -32,6 +38,31 @@ export class UserService {
 
     return await userModel.save();
   }
+
+  async   findOne({email, password}: LoginUserDto): Promise<any> {
+    const user = await this.userModel.findOne({email});
+    if (!user) {
+      return null;
+    }
+    if (bcrypt.hash(user.password, password)) {
+      return user;
+    }
+
+    return null;
+  }
+
+  public generateJWT(user) {
+    let today = new Date();
+    let exp = new Date(today);
+    exp.setDate(today.getDate() + 60);
+
+    return jwt.sign({
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      exp: exp.getTime() / 1000,
+    }, SECRET);
+  };
 
 }
 

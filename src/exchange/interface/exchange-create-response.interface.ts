@@ -1,6 +1,6 @@
 import { IExchange } from './exchange.interface';
 
-export interface ICurrencyCreateResponse {
+export interface IExchangeCreateResponse {
   status: number;
   message: string;
   exchange: IExchange | null;

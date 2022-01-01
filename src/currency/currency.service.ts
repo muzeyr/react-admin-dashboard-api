@@ -4,15 +4,18 @@ import { ICurrency } from './interface/currency.interface';
 import { CreateCurrencyDto } from './dto/create-currency.dto';
 import { Model } from 'mongoose';
 import { UpdateCurrencyDto } from './dto/update-currency.dto';
+import { Coin } from '../exchange/interface/coin.interface';
 
 @Injectable()
 export class CurrencyService {
     constructor(@InjectModel('Currency') private readonly currencyModel: Model<ICurrency>) {}
   
-    public async search(params: { currency: string }): Promise<ICurrency[]> {
+  public async search(params: { currency: string }): Promise<ICurrency[]> {
     return this.currencyModel.find(params).exec();
   }
-  
+  public async findByName(params: { name: string }): Promise<Coin> {
+    return this.currencyModel.findOne(params).exec();
+  }
   public async create(user: CreateCurrencyDto): Promise<ICurrency> {
     const userModel = new this.currencyModel(user);
     return await userModel.save();
