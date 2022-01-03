@@ -19,7 +19,6 @@ export class ExchangeService {
 
 
   public async findCoin(userID: string, coin: string): Promise<any> {
-    console.log(userID);
     let exchange = await this.model.aggregate([
       {
         $match: {

@@ -32,7 +32,6 @@ export class CurrencyService {
   }
   
   public async allWithCalculate(userId: string): Promise<any> {
-    console.log(userId);
     let latestCoins= [];
     let currencies = await this.currencyModel.find().exec();
 
@@ -52,6 +51,7 @@ export class CurrencyService {
             totalValue: { $sum: '$fromQuantity' },
             type: { $first: '$type' },
             coin: { $first: '$fromCoin' },
+            fromValue: { $first: '$fromValue' },
           }
         }
       ]).then(result => {
