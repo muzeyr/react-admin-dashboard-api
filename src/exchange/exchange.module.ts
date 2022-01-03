@@ -12,6 +12,5 @@ import { UserSchema } from '../user/schema/user.schema';
   ],
   controllers: [ExchangeController],
   providers: [ExchangeService],
-  exports: []
 })
 export class ExchangeModule {}

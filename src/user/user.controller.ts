@@ -6,7 +6,6 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { UserRO } from './dto/user.interface';
 import { LoginUserDto } from './dto/login-user.dto';
-
 @Controller("user")
 @ApiTags('user')
 export class UserController {
@@ -37,17 +36,7 @@ export class UserController {
         };
       } else {
         try {
-          /*
-          const coin = await this.coinService.findByName({name:'XRP'});
-          let newUserCampain : {
-            quantityTo:2,
-            coinFrom: any,
-            quantityFrom:40000
-          }
-          newUserCampain.coinFrom = coin;
-          userRequest.exchanges = [newUserCampain];
-          console.log(userRequest);
-          */
+         
          userRequest.exchanges = [{ quantityTo:0, coinFrom: 'XRP',quantityFrom:40000,coinTo:''}];
           const createdUser = await this.userService.create(userRequest);
           delete createdUser.password;
@@ -94,6 +83,7 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @Post('/login')
   async login(@Body() loginUserDto: LoginUserDto): Promise<UserRO> {
+    console.log(loginUserDto);
     const _user = await this.userService.findOne(loginUserDto);
 
     const errors = {User: ' not found'};
