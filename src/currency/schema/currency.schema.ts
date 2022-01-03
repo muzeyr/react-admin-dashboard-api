@@ -11,12 +11,17 @@ export interface ICurrencySchema extends mongoose.Document {
   name: string;
   value: string;
   unit: string;
+  icon: string;
   created_at: any;
 }
 
 export const CurrencySchema = new mongoose.Schema<ICurrencySchema>(
   {
     name: {
+      type: String,
+      required: [true, 'Name can not be empty'],
+    },
+    icon: {
       type: String,
       required: [true, 'Name can not be empty'],
     },

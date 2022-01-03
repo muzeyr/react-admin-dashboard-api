@@ -38,6 +38,7 @@ export class UserController {
         try {
          
          userRequest.exchanges = [{ quantityTo:0, coinFrom: 'XRP',quantityFrom:40000,coinTo:''}];
+         userRequest.avatar = 'http://zcntech.com/wp-content/uploads/2016/05/profile.png';
           const createdUser = await this.userService.create(userRequest);
           delete createdUser.password;
           result = {
@@ -83,7 +84,6 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @Post('/login')
   async login(@Body() loginUserDto: LoginUserDto): Promise<UserRO> {
-    console.log(loginUserDto);
     const _user = await this.userService.findOne(loginUserDto);
 
     const errors = {User: ' not found'};
@@ -92,6 +92,7 @@ export class UserController {
     const token = await this.userService.generateJWT(_user);
     const {email, username, bio, image} = _user;
     const user = {email, token, username, bio, image};
+    console.log(user);
     return {user}
   }
 

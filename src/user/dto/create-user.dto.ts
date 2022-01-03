@@ -15,6 +15,13 @@ export class CreateUserDto {
   name: string;
 
   @ApiProperty({
+    uniqueItems: true,
+    example: 'Avatar',  
+    default: 'http://zcntech.com/wp-content/uploads/2016/05/profile.png'  
+  })
+  avatar: string;
+
+  @ApiProperty({
     minLength: 1,
     example: 'OZCAN',
   })

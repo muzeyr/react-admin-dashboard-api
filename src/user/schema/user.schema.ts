@@ -14,6 +14,7 @@ export interface IUserSchema extends mongoose.Document {
   surname: string;
   email: string;
   password: string;
+  avatar: string;
   comparePassword: (password: string) => Promise<boolean>;
   getEncryptedPassword: (password: string) => Promise<string>;
   exchanges: IExchangeSchema[]
@@ -40,6 +41,10 @@ export const UserSchema = new mongoose.Schema<IUserSchema>(
       ],
     },
     name: {
+      type: String,
+      required: [true, 'Name can not be empty'],
+    },
+    avatar: {
       type: String,
       required: [true, 'Name can not be empty'],
     },
