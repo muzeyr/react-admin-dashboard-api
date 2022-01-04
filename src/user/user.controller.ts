@@ -92,7 +92,6 @@ export class UserController {
     const token = await this.userService.generateJWT(_user);
     const {email, username, bio, image} = _user;
     const user = {email, token, username, bio, image};
-    console.log(user);
     return {user}
   }
 

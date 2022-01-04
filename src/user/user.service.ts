@@ -41,13 +41,11 @@ export class UserService {
 
   async   findOne({email, password}: LoginUserDto): Promise<any> {
     const  user = await this.userModel.findOne({email});
-    console.log('user.service:',user);
 
     if (!user) {
       return null;
     }
     if (bcrypt.hash(user.password, password)) {
-      console.log('login başarılı');
       return user;
     }
 
