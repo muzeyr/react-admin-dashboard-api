@@ -55,7 +55,7 @@ export const UserSchema = new mongoose.Schema<IUserSchema>(
     password: {
       type: String,
       required: [true, 'Password can not be empty'],
-      minlength: [6, 'Password should include at least 6 chars'],
+      minlength: [1, 'Password should include at least 1 chars'],
     },
     exchanges: [exchange],
   },
