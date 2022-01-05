@@ -28,7 +28,7 @@ export class CreateUserDto {
   surname: string;
 
   @ApiProperty({
-    minLength: 6,
+    minLength: 1,
     example: '*****',
   })
   password: string;
